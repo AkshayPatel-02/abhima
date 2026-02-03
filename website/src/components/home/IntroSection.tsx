@@ -31,8 +31,8 @@ export default function IntroSection() {
             ease: "power2.out",
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: "top 70%",
-              end: "center center",
+              start: "top 90%",
+              end: "top 40%",
               scrub: 1,
             },
           }
@@ -49,7 +49,7 @@ export default function IntroSection() {
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 80%",
+            start: "top 95%",
           },
         }
       );
@@ -67,7 +67,7 @@ export default function IntroSection() {
   };
 
   return (
-    <section ref={sectionRef} className="relative py-24 md:py-40 bg-ivory overflow-hidden">
+    <section ref={sectionRef} className="relative py-12 md:py-20 bg-ivory overflow-hidden isolate">
       {/* Decorative gradient orb */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[150px] opacity-20 pointer-events-none"
         style={{ background: "radial-gradient(circle, #B88F14 0%, transparent 70%)" }}

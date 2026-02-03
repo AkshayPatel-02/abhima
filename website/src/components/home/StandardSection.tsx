@@ -98,7 +98,7 @@ export default function StandardSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-32 md:py-48 bg-charcoal text-ivory overflow-hidden">
+    <section ref={sectionRef} className="relative py-12 md:py-20 bg-charcoal text-ivory overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="float-element absolute top-20 left-10 w-2 h-2 bg-gold/30 rounded-full" />

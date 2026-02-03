@@ -18,7 +18,21 @@ export default function HeroSection() {
   const orb1Ref = useRef<HTMLDivElement>(null);
   const orb2Ref = useRef<HTMLDivElement>(null);
   const orb3Ref = useRef<HTMLDivElement>(null);
+  const particlesRef = useRef<HTMLDivElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  // Track mouse position for interactive effects
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth) * 100,
+        y: (e.clientY / window.innerHeight) * 100,
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -54,6 +68,23 @@ export default function HeroSection() {
         yoyo: true,
         ease: "sine.inOut",
       });
+
+      // Floating particles animation
+      const particles = particlesRef.current?.querySelectorAll(".particle");
+      if (particles) {
+        particles.forEach((particle, i) => {
+          gsap.to(particle, {
+            y: "random(-100, 100)",
+            x: "random(-50, 50)",
+            opacity: "random(0.2, 0.8)",
+            duration: "random(3, 8)",
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: i * 0.2,
+          });
+        });
+      }
 
       // Title animation - split into chars
       if (titleRef.current) {
@@ -156,26 +187,29 @@ export default function HeroSection() {
         ref={gradientRef}
         className="absolute inset-0 overflow-hidden"
       >
-        {/* Gradient orbs */}
+        {/* Gradient orbs with mouse parallax */}
         <div
           ref={orb1Ref}
-          className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full blur-[100px] opacity-60"
+          className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full blur-[100px] opacity-60 transition-transform duration-[3000ms] ease-out"
           style={{
             background: "radial-gradient(circle, #B88F14 0%, transparent 70%)",
+            transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`,
           }}
         />
         <div
           ref={orb2Ref}
-          className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-50"
+          className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-50 transition-transform duration-[3000ms] ease-out"
           style={{
             background: "radial-gradient(circle, #D4A853 0%, transparent 70%)",
+            transform: `translate(${-mousePosition.x * 0.03}px, ${-mousePosition.y * 0.03}px)`,
           }}
         />
         <div
           ref={orb3Ref}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[150px] opacity-30"
+          className="absolute top-1/2 left-1/2 w-[800px] h-[800px] rounded-full blur-[150px] opacity-30 transition-transform duration-[3000ms] ease-out"
           style={{
             background: "radial-gradient(circle, #8B6914 0%, transparent 60%)",
+            transform: `translate(-50%, -50%)`,
           }}
         />
         
@@ -191,6 +225,27 @@ export default function HeroSection() {
           }}
         />
 
+        {/* Floating particles */}
+        <div ref={particlesRef} className="absolute inset-0 pointer-events-none">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="particle absolute w-1 h-1 bg-gold/60 rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                boxShadow: "0 0 10px rgba(184, 143, 20, 0.5)",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Decorative lines */}
+        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-gold/20 to-transparent" />
+        <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-gold/20 to-transparent" />
+        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+        <div className="absolute bottom-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+
         {/* Noise texture overlay */}
         <div 
           className="absolute inset-0 opacity-20 mix-blend-overlay"
@@ -201,36 +256,42 @@ export default function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container-padding text-center">
+      <div className="relative z-20 container-padding text-center">
         <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full bg-gold/10 border border-gold/30 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full bg-gold/10 border border-gold/30 backdrop-blur-sm hover:bg-gold/20 transition-all duration-300 cursor-default">
             <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
             <span className="text-sm text-gold font-medium tracking-wide">
               Crafting Extraordinary Moments
             </span>
+            <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
           </div>
 
           {/* Main title */}
           <h1
             ref={titleRef}
-            className="text-5xl md:text-7xl lg:text-8xl font-semibold text-ivory mb-6 leading-tight"
-            style={{ perspective: "1000px" }}
+            className="text-6xl md:text-7xl lg:text-[120px] font-light tracking-[0.02em] text-ivory mb-8 leading-[1.1] relative"
+            style={{ 
+              perspective: "1000px",
+              fontFamily: "'Playfair Display', serif",
+              letterSpacing: "0.05em",
+              textShadow: "0 0 80px rgba(184, 143, 20, 0.3)",
+            }}
           >
-            <span className="block">{splitText("Abhima")}</span>
-            <span className="block mt-2">
-              <span className="text-gold">{splitText("Events")}</span>
-            </span>
+            {splitText("ABHIMA EVENTS")}
+            
+            {/* Decorative elements */}
+            <div className="absolute -left-20 top-1/2 w-16 h-px bg-gradient-to-r from-transparent to-gold/50 hidden lg:block" />
+            <div className="absolute -right-20 top-1/2 w-16 h-px bg-gradient-to-l from-transparent to-gold/50 hidden lg:block" />
           </h1>
 
           {/* Subtitle */}
           <p
             ref={subtitleRef}
-            className="text-xl md:text-2xl text-ivory/70 max-w-2xl mx-auto mb-10 font-light"
+            className="text-lg md:text-xl text-ivory/60 max-w-3xl mx-auto mb-12 font-light leading-relaxed tracking-wide"
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            A bespoke event curation house — where legacy, culture, and 
-            <span className="text-gold"> quiet luxury </span>
-            converge to create unforgettable celebrations.
+            A bespoke event curation house — where legacy, culture, and quiet luxury converge to create unforgettable celebrations.
           </p>
 
           {/* CTA Buttons */}
@@ -262,18 +323,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-        <span className="text-ivory/50 text-sm tracking-widest uppercase">Scroll</span>
-        <svg 
-          className="w-6 h-6 text-gold" 
-          fill="none" 
-          viewBox="0 0 24 24" 
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
-      </div>
     </section>
   );
 }

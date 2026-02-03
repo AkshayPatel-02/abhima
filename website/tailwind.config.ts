@@ -19,7 +19,11 @@ const config: Config = {
         "charcoal-border": "rgba(44, 42, 38, 0.1)",
       },
       fontFamily: {
-        poppins: ["Poppins", "sans-serif"],
+        poppins: ["var(--font-poppins)", "sans-serif"],
+        playfair: ["var(--font-playfair)", "serif"],
+        inter: ["var(--font-inter)", "sans-serif"],
+        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        serif: ["var(--font-playfair)", "Georgia", "serif"],
       },
       fontSize: {
         // Typography Scale (from Design Document)

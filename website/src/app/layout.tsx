@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins, Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -9,6 +9,20 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-poppins",
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-playfair",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -53,7 +67,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} font-sans antialiased`}>
+      <body className={`${poppins.variable} ${playfair.variable} ${inter.variable} font-sans antialiased`}>
         <Header />
         <main>{children}</main>
         <Footer />

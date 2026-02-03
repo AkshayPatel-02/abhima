@@ -14,29 +14,25 @@ const experiences = [
     title: "Weddings & Ceremonial Celebrations",
     description: "Tradition-honouring weddings and rituals, curated with elegance and intention.",
     href: "/experiences#weddings",
-    icon: "💍",
-    gradient: "from-amber-500/20 via-gold/30 to-orange-500/20",
+    number: "01",
   },
   {
     title: "Corporate & Brand Experiences",
     description: "Purpose-driven corporate events executed with clarity and professionalism.",
     href: "/experiences#corporate",
-    icon: "🏛️",
-    gradient: "from-blue-500/20 via-indigo-500/20 to-purple-500/20",
+    number: "02",
   },
   {
     title: "Private & Social Celebrations",
     description: "Intimate and milestone gatherings, elevated with thoughtful design.",
     href: "/experiences#private",
-    icon: "🥂",
-    gradient: "from-rose-500/20 via-pink-500/20 to-fuchsia-500/20",
+    number: "03",
   },
   {
     title: "Spiritual & Cultural Events",
     description: "Respectfully managed spiritual and cultural assemblies.",
     href: "/experiences#spiritual",
-    icon: "🪷",
-    gradient: "from-emerald-500/20 via-teal-500/20 to-cyan-500/20",
+    number: "04",
   },
 ];
 
@@ -58,7 +54,7 @@ export default function ExperiencesSection() {
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 75%",
+            start: "top 90%",
           },
         }
       );
@@ -95,7 +91,7 @@ export default function ExperiencesSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-24 md:py-40 bg-charcoal overflow-hidden">
+    <section ref={sectionRef} className="relative py-12 md:py-20 bg-charcoal overflow-hidden isolate">
       {/* Animated background gradient */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-gold/10 rounded-full blur-[120px]" />
@@ -116,49 +112,50 @@ export default function ExperiencesSection() {
           </p>
         </div>
 
-        {/* Experiences Grid */}
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8" style={{ perspective: "1000px" }}>
+        {/* Experiences Grid - Minimal Luxury */}
+        <div ref={cardsRef} className="space-y-1">
           {experiences.map((experience, index) => (
             <Link
               key={experience.title}
               href={experience.href}
-              className={`experience-card group relative block p-8 md:p-10 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:border-gold/50 hover:bg-white/10 hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(184,143,20,0.15)]`}
+              className="experience-card group relative block py-10 md:py-12 border-b border-white/10 transition-all duration-500 hover:border-gold/30"
             >
-              {/* Gradient background on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${experience.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+              <div className="flex items-start justify-between gap-8">
+                {/* Number */}
+                <span 
+                  className="text-lg text-gold/40 font-light tracking-wider mt-1"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
+                  {experience.number}
+                </span>
 
-              {/* Content */}
-              <div className="relative z-10">
-                {/* Icon and Number */}
-                <div className="flex items-center justify-between mb-6">
-                  <span className="text-4xl">{experience.icon}</span>
-                  <span className="text-6xl font-bold text-white/5 group-hover:text-gold/20 transition-colors duration-500">
-                    0{index + 1}
-                  </span>
+                {/* Content */}
+                <div className="flex-1">
+                  <h3 
+                    className="text-3xl md:text-4xl lg:text-5xl font-light text-ivory mb-4 group-hover:text-gold transition-colors duration-500 tracking-wide"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  >
+                    {experience.title}
+                  </h3>
+                  <p 
+                    className="text-base md:text-lg text-ivory/50 leading-relaxed max-w-2xl font-light"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    {experience.description}
+                  </p>
                 </div>
-
-                {/* Title */}
-                <h3 className="text-2xl md:text-3xl font-semibold text-ivory mb-4 group-hover:text-gold transition-colors duration-300">
-                  {experience.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-base md:text-lg text-ivory/60 leading-relaxed mb-6">
-                  {experience.description}
-                </p>
 
                 {/* Arrow */}
-                <div className="flex items-center gap-2 text-gold opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                  <span className="text-sm font-medium">Explore</span>
-                  <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                <div className="hidden md:flex items-center justify-center w-12 h-12 rounded-full border border-white/10 group-hover:border-gold/50 group-hover:bg-gold/10 transition-all duration-500">
+                  <svg 
+                    className="w-5 h-5 text-ivory/40 group-hover:text-gold transform group-hover:translate-x-1 transition-all" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </div>
-              </div>
-
-              {/* Decorative corner accent */}
-              <div className="absolute top-0 right-0 w-20 h-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-gold/50 rounded-tr-xl" />
               </div>
             </Link>
           ))}

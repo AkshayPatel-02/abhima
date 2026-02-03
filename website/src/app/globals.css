@@ -1,5 +1,5 @@
-/* Google Fonts - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+/* Google Fonts - Poppins, Playfair Display, Inter */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 @import "tailwindcss";
 
@@ -194,4 +194,52 @@ select:focus-visible {
     padding-left: 5rem;
     padding-right: 5rem;
   }
+}
+
+/* Luxury Design Elements */
+.experience-card:hover {
+  background: linear-gradient(90deg, transparent, rgba(184, 143, 20, 0.03), transparent);
+}
+
+.reason-item:hover .progress-line {
+  transform: scaleX(1);
+}
+
+/* Elegant Typography */
+.luxury-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+}
+
+.luxury-body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  line-height: 1.7;
+}
+
+/* Minimal Hover States */
+.minimal-hover {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.minimal-hover:hover {
+  transform: translateX(8px);
+}
+
+/* Subtle Line Animation */
+@keyframes line-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animated-line {
+  transform-origin: left;
+  animation: line-grow 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }

@@ -9,11 +9,11 @@ if (typeof window !== "undefined") {
 }
 
 const reasons = [
-  { text: "Celebrations of every scale, one unwavering standard", icon: "✨" },
-  { text: "Deep understanding of Telugu & pan-India traditions", icon: "🎯" },
-  { text: "One-stop end-to-end execution", icon: "🔑" },
-  { text: "Bespoke experiences, never templated", icon: "🎨" },
-  { text: "Trusted Abhima legacy", icon: "🏆" },
+  { text: "Celebrations of every scale, one unwavering standard", number: "01" },
+  { text: "Deep understanding of Telugu & pan-India traditions", number: "02" },
+  { text: "One-stop end-to-end execution", number: "03" },
+  { text: "Bespoke experiences, never templated", number: "04" },
+  { text: "Trusted Abhima legacy", number: "05" },
 ];
 
 export default function WhyAbhimaSection() {
@@ -34,7 +34,7 @@ export default function WhyAbhimaSection() {
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 70%",
+            start: "top 90%",
           },
         }
       );
@@ -105,7 +105,7 @@ export default function WhyAbhimaSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-24 md:py-40 bg-ivory overflow-hidden">
+    <section ref={sectionRef} className="relative py-12 md:py-20 bg-ivory overflow-hidden isolate">
       {/* Decorative background */}
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gold/5 to-transparent" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2" />
@@ -142,38 +142,34 @@ export default function WhyAbhimaSection() {
             </div>
           </div>
 
-          {/* Right Column - Reasons List */}
-          <div style={{ perspective: "1000px" }}>
-            <ul ref={listRef} className="space-y-4">
+          {/* Right Column - Elegant List */}
+          <div>
+            <ul ref={listRef} className="space-y-0">
               {reasons.map((reason, index) => (
                 <li 
                   key={index} 
-                  className="reason-item group p-6 rounded-2xl bg-white border border-charcoal/5 shadow-sm hover:shadow-lg hover:border-gold/30 transition-all duration-300 hover:scale-[1.02]"
+                  className="reason-item group py-8 border-b border-charcoal/10 last:border-b-0 hover:border-gold/20 transition-all duration-500"
                 >
-                  <div className="flex items-start gap-4">
-                    {/* Icon */}
-                    <span className="flex-shrink-0 w-12 h-12 flex items-center justify-center text-2xl bg-gold/10 rounded-xl group-hover:bg-gold/20 transition-colors">
-                      {reason.icon}
+                  <div className="flex items-center gap-6">
+                    {/* Number */}
+                    <span 
+                      className="text-sm text-gold/40 font-light tracking-widest w-12"
+                      style={{ fontFamily: "'Inter', sans-serif" }}
+                    >
+                      {reason.number}
                     </span>
 
-                    <div className="flex-1">
-                      {/* Number */}
-                      <span className="text-xs text-gold font-semibold tracking-wider mb-2 block">
-                        0{index + 1}
-                      </span>
+                    {/* Text */}
+                    <span 
+                      className="text-xl md:text-2xl text-charcoal font-light group-hover:text-gold transition-colors duration-500 flex-1"
+                      style={{ fontFamily: "'Inter', sans-serif" }}
+                    >
+                      {reason.text}
+                    </span>
 
-                      {/* Text */}
-                      <span className="text-lg text-charcoal font-medium group-hover:text-gold transition-colors">
-                        {reason.text}
-                      </span>
-
-                      {/* Progress bar */}
-                      <div className="mt-3 h-1 bg-charcoal/5 rounded-full overflow-hidden">
-                        <div 
-                          className="progress-bar h-full bg-gradient-to-r from-gold to-gold/50 rounded-full origin-left"
-                          style={{ width: `${100 - index * 10}%` }}
-                        />
-                      </div>
+                    {/* Decorative line */}
+                    <div className="hidden md:block">
+                      <div className="w-12 h-px bg-charcoal/10 group-hover:bg-gold/50 group-hover:w-16 transition-all duration-500" />
                     </div>
                   </div>
                 </li>
@@ -181,17 +177,13 @@ export default function WhyAbhimaSection() {
             </ul>
 
             {/* Trust Statement */}
-            <div className="trust-statement mt-8 p-6 rounded-2xl bg-charcoal text-ivory">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center">
-                  <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                </div>
-                <p className="text-ivory/80 italic flex-1">
-                  Trusted by families, institutions, and organisations across India.
-                </p>
-              </div>
+            <div className="trust-statement mt-12 pt-8 border-t border-charcoal/10">
+              <p 
+                className="text-charcoal/60 italic text-lg font-light"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                Trusted by families, institutions, and organisations across India.
+              </p>
             </div>
           </div>
         </div>
