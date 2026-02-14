@@ -1,328 +1,59 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Button from "@/components/ui/Button";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
+/**
+ * Design-compliant Hero Section following ABHIMA Events Design Document
+ * 
+ * Design Rules:
+ * - Clean Ivory background (NO gradients, particles, or orbs)
+ * - NO GSAP animations (parallax, scale-on-scroll, character reveals)
+ * - NO decorative elements (floating particles, grid overlays, noise textures)
+ * - Only Poppins font family (NO Playfair Display or Inter)
+ * - Generous white space: 80px vertical padding (desktop), 60px (mobile)
+ * - Button hover states only (color transitions, 0.2s ease-out)
+ */
 export default function HeroSection() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
-  const gradientRef = useRef<HTMLDivElement>(null);
-  const orb1Ref = useRef<HTMLDivElement>(null);
-  const orb2Ref = useRef<HTMLDivElement>(null);
-  const orb3Ref = useRef<HTMLDivElement>(null);
-  const particlesRef = useRef<HTMLDivElement>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  // Track mouse position for interactive effects
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth) * 100,
-        y: (e.clientY / window.innerHeight) * 100,
-      });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  useEffect(() => {
-    setIsLoaded(true);
-    
-    const ctx = gsap.context(() => {
-      // Initial animation timeline
-      const tl = gsap.timeline({ delay: 0.3 });
-
-      // Animate gradient orbs floating
-      gsap.to(orb1Ref.current, {
-        x: "random(-50, 50)",
-        y: "random(-30, 30)",
-        duration: 8,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-
-      gsap.to(orb2Ref.current, {
-        x: "random(-40, 40)",
-        y: "random(-40, 40)",
-        duration: 10,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-
-      gsap.to(orb3Ref.current, {
-        x: "random(-60, 60)",
-        y: "random(-20, 20)",
-        duration: 12,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-
-      // Floating particles animation
-      const particles = particlesRef.current?.querySelectorAll(".particle");
-      if (particles) {
-        particles.forEach((particle, i) => {
-          gsap.to(particle, {
-            y: "random(-100, 100)",
-            x: "random(-50, 50)",
-            opacity: "random(0.2, 0.8)",
-            duration: "random(3, 8)",
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            delay: i * 0.2,
-          });
-        });
-      }
-
-      // Title animation - split into chars
-      if (titleRef.current) {
-        const chars = titleRef.current.querySelectorAll(".char");
-        tl.fromTo(
-          chars,
-          { 
-            opacity: 0, 
-            y: 100,
-            rotateX: -90,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            rotateX: 0,
-            duration: 1,
-            stagger: 0.03,
-            ease: "back.out(1.7)",
-          }
-        );
-      }
-
-      // Subtitle animation
-      tl.fromTo(
-        subtitleRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-        "-=0.4"
-      );
-
-      // Buttons animation
-      if (buttonsRef.current) {
-        const buttons = buttonsRef.current.querySelectorAll("a");
-        tl.fromTo(
-          buttons,
-          { opacity: 0, y: 20, scale: 0.9 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.6,
-            stagger: 0.15,
-            ease: "back.out(2)",
-          },
-          "-=0.3"
-        );
-      }
-
-      // Parallax effect on scroll
-      gsap.to(gradientRef.current, {
-        yPercent: 50,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-
-      // Scale down hero on scroll
-      gsap.to(heroRef.current, {
-        scale: 0.9,
-        opacity: 0.5,
-        borderRadius: "40px",
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  // Split text into characters for animation
-  const splitText = (text: string) => {
-    return text.split("").map((char, i) => (
-      <span
-        key={i}
-        className="char inline-block"
-        style={{ perspective: "1000px" }}
-      >
-        {char === " " ? "\u00A0" : char}
-      </span>
-    ));
-  };
-
   return (
-    <section
-      ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-charcoal"
-    >
-      {/* Animated gradient background */}
-      <div 
-        ref={gradientRef}
-        className="absolute inset-0 overflow-hidden"
-      >
-        {/* Gradient orbs with mouse parallax */}
-        <div
-          ref={orb1Ref}
-          className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full blur-[100px] opacity-60 transition-transform duration-[3000ms] ease-out"
-          style={{
-            background: "radial-gradient(circle, #B88F14 0%, transparent 70%)",
-            transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`,
-          }}
-        />
-        <div
-          ref={orb2Ref}
-          className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-50 transition-transform duration-[3000ms] ease-out"
-          style={{
-            background: "radial-gradient(circle, #D4A853 0%, transparent 70%)",
-            transform: `translate(${-mousePosition.x * 0.03}px, ${-mousePosition.y * 0.03}px)`,
-          }}
-        />
-        <div
-          ref={orb3Ref}
-          className="absolute top-1/2 left-1/2 w-[800px] h-[800px] rounded-full blur-[150px] opacity-30 transition-transform duration-[3000ms] ease-out"
-          style={{
-            background: "radial-gradient(circle, #8B6914 0%, transparent 60%)",
-            transform: `translate(-50%, -50%)`,
-          }}
-        />
-        
-        {/* Animated grid */}
-        <div 
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(184, 143, 20, 0.3) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(184, 143, 20, 0.3) 1px, transparent 1px)
-            `,
-            backgroundSize: "80px 80px",
-          }}
-        />
-
-        {/* Floating particles */}
-        <div ref={particlesRef} className="absolute inset-0 pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="particle absolute w-1 h-1 bg-gold/60 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                boxShadow: "0 0 10px rgba(184, 143, 20, 0.5)",
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Decorative lines */}
-        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-gold/20 to-transparent" />
-        <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-gold/20 to-transparent" />
-        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
-        <div className="absolute bottom-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
-
-        {/* Noise texture overlay */}
-        <div 
-          className="absolute inset-0 opacity-20 mix-blend-overlay"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }}
-        />
-      </div>
-
+    <section className="relative min-h-screen flex items-center justify-center bg-ivory overflow-hidden">
       {/* Content */}
-      <div className="relative z-20 container-padding text-center">
-        <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full bg-gold/10 border border-gold/30 backdrop-blur-sm hover:bg-gold/20 transition-all duration-300 cursor-default">
-            <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-            <span className="text-sm text-gold font-medium tracking-wide">
-              Crafting Extraordinary Moments
-            </span>
-            <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-          </div>
+      <div className="relative z-10 container mx-auto px-6 md:px-10 lg:px-20 py-20 md:py-30 text-center max-w-[1200px]">
 
-          {/* Main title */}
-          <h1
-            ref={titleRef}
-            className="text-6xl md:text-7xl lg:text-[120px] font-light tracking-[0.02em] text-ivory mb-8 leading-[1.1] relative"
-            style={{ 
-              perspective: "1000px",
-              fontFamily: "'Playfair Display', serif",
-              letterSpacing: "0.05em",
-              textShadow: "0 0 80px rgba(184, 143, 20, 0.3)",
-            }}
-          >
-            {splitText("ABHIMA EVENTS")}
-            
-            {/* Decorative elements */}
-            <div className="absolute -left-20 top-1/2 w-16 h-px bg-gradient-to-r from-transparent to-gold/50 hidden lg:block" />
-            <div className="absolute -right-20 top-1/2 w-16 h-px bg-gradient-to-l from-transparent to-gold/50 hidden lg:block" />
-          </h1>
+        {/* Main title */}
+        <h1 className="font-poppins font-semibold text-5xl md:text-[56px] text-charcoal mb-6 leading-[1.1] tracking-tight">
+          Where legacy, culture, and quiet luxury converge
+        </h1>
 
-          {/* Subtitle */}
-          <p
-            ref={subtitleRef}
-            className="text-lg md:text-xl text-ivory/60 max-w-3xl mx-auto mb-12 font-light leading-relaxed tracking-wide"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            A bespoke event curation house — where legacy, culture, and quiet luxury converge to create unforgettable celebrations.
+        {/* Subtitle */}
+        <p className="font-poppins text-lg md:text-xl text-charcoal-70 max-w-3xl mx-auto mb-12 leading-relaxed">
+          A bespoke event curation house creating unforgettable celebrations with discretion, precision, and cultural authenticity.
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Button href="/experiences" variant="primary">
+            Explore Experiences
+          </Button>
+          <Button href="/contact" variant="secondary">
+            Begin Conversation
+          </Button>
+        </div>
+
+        {/* Trust Signal */}
+        <div className="mt-16 pt-8 border-t border-charcoal-10 max-w-2xl mx-auto">
+          <p className="font-poppins text-sm text-charcoal-50 mb-3">
+            Based in Hyderabad | Serving India & Beyond
           </p>
-
-          {/* CTA Buttons */}
-          <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/experiences"
-              className="group relative px-8 py-4 bg-gold text-charcoal font-semibold rounded-full overflow-hidden transition-all duration-500 hover:scale-105 hover:shadow-[0_0_40px_rgba(184,143,20,0.4)]"
-            >
-              <span className="relative z-10">Explore Experiences</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-gold via-[#D4A853] to-gold bg-[length:200%_100%] animate-shimmer" />
-            </Link>
-            <Link
-              href="/contact"
-              className="group px-8 py-4 border-2 border-gold/50 text-gold font-semibold rounded-full transition-all duration-300 hover:bg-gold/10 hover:border-gold hover:scale-105 backdrop-blur-sm"
-            >
-              <span className="flex items-center gap-2 justify-center">
-                Begin Your Journey
-                <svg 
-                  className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </span>
-            </Link>
+          <div className="flex flex-wrap gap-6 justify-center text-sm text-charcoal-70">
+            <span>Weddings & Ceremonial Celebrations</span>
+            <span className="text-charcoal-20">•</span>
+            <span>Corporate & Brand Experiences</span>
+            <span className="text-charcoal-20">•</span>
+            <span>Spiritual & Cultural Events</span>
           </div>
         </div>
       </div>
-
     </section>
   );
 }

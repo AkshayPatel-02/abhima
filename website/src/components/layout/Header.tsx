@@ -3,103 +3,109 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Button from "@/components/ui/Button";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Experiences", href: "/experiences" },
   { name: "About", href: "/about" },
+  { name: "Experiences", href: "/experiences" },
+  { name: "Services", href: "/services" },
+  { name: "Destinations", href: "/destinations" },
+  { name: "FAQs", href: "/faqs" },
   { name: "Contact", href: "/contact" },
 ];
 
+/**
+ * Design-compliant Header following ABHIMA Events Design Document
+ * 
+ * Design Rules:
+ * - NON-STICKY navigation (disappears on scroll)
+ * - Height: 80px fixed
+ * - Background: Ivory solid (100% opacity)
+ * - Border-bottom: 1px solid Charcoal 10%
+ * - Active state: Antique Gold underline (2px, centered) on desktop
+ * - Mobile: Full-screen Ivory overlay with slide-in (0.3s ease-in-out)
+ * - NO shimmer effects, NO staggered animations
+ */
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
+  // Close mobile menu on route change
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [mobileMenuOpen]);
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
   };
 
-  // Check if we're on a dark hero page (home)
-  const isDarkHero = pathname === "/";
-
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled 
-          ? "bg-charcoal/95 backdrop-blur-lg shadow-lg border-b border-gold/10" 
-          : isDarkHero
-            ? "bg-transparent"
-            : "bg-ivory/80 backdrop-blur-sm border-b border-charcoal/10"
-      }`}
-    >
+    <header className="bg-ivory border-b border-charcoal-10">
       {/* Desktop Navigation */}
-      <nav className="mx-auto max-w-[1400px] px-6 md:px-10 lg:px-20">
+      <nav className="mx-auto max-w-[1200px] px-6 md:px-10 lg:px-20">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="group flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center group-hover:bg-gold/30 transition-colors">
-              <span className="text-gold font-bold text-lg">A</span>
-            </div>
-            <span className={`text-xl font-semibold tracking-tight uppercase transition-colors ${
-              scrolled || !isDarkHero ? "text-charcoal" : "text-ivory"
-            } group-hover:text-gold`}>
-              Abhima
+          <Link href="/" className="flex items-center gap-3 group">
+            <img
+              src="/logo.png"
+              alt="Abhima Events Logo"
+              className="h-10 w-10 transition-opacity duration-200 group-hover:opacity-80"
+            />
+            <span className="font-poppins font-semibold text-xl text-charcoal tracking-tight uppercase transition-colors duration-200 group-hover:text-gold">
+              Abhima Events
             </span>
           </Link>
 
-          {/* Desktop Nav Links */}
-          <div className="hidden lg:flex lg:items-center lg:gap-1">
-            {navigation.map((item) => (
+          {/* Desktop Nav Links - Centered */}
+          <div className="hidden lg:flex lg:items-center lg:gap-10 flex-1 justify-center">
+            {navigation.filter(item => item.name !== 'Contact').map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full ${
-                  isActive(item.href)
-                    ? "text-gold bg-gold/10"
-                    : scrolled || !isDarkHero
-                      ? "text-charcoal/80 hover:text-gold hover:bg-gold/5"
-                      : "text-ivory/80 hover:text-gold hover:bg-white/5"
-                }`}
+                className={`
+                  relative font-poppins text-base transition-colors duration-200
+                  ${isActive(item.href)
+                    ? "text-charcoal"
+                    : "text-charcoal hover:text-charcoal-70"
+                  }
+                `}
               >
                 {item.name}
                 {isActive(item.href) && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold" />
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-full h-0.5 bg-gold" />
                 )}
               </Link>
             ))}
           </div>
 
-          {/* CTA Button - Desktop */}
-          <div className="hidden lg:block">
-            <Link
-              href="/contact"
-              className="group relative inline-flex h-11 items-center justify-center px-6 bg-gold text-charcoal text-sm font-semibold rounded-full overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(184,143,20,0.3)]"
-            >
-              <span className="relative z-10">Begin Conversation</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-gold via-[#D4A853] to-gold bg-[length:200%_100%] opacity-0 group-hover:opacity-100 animate-shimmer transition-opacity" />
-            </Link>
+          {/* CTA Button - Desktop - Pushed right */}
+          <div className="hidden lg:block flex-none">
+            <Button href="/contact" variant="primary" size="small">
+              Begin Conversation
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             type="button"
-            className={`lg:hidden p-2 rounded-full transition-colors ${
-              scrolled || !isDarkHero 
-                ? "text-charcoal hover:bg-charcoal/5" 
-                : "text-ivory hover:bg-white/10"
-            }`}
+            className="lg:hidden p-2 text-charcoal hover:text-gold transition-colors duration-200"
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open menu"
+            aria-expanded={mobileMenuOpen}
           >
             <svg
               className="h-6 w-6"
@@ -125,28 +131,31 @@ export default function Header() {
           <div
             className="fixed inset-0 bg-charcoal/60 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
           />
 
-          {/* Menu Panel */}
+          {/* Menu Panel - Slide in from right */}
           <div
-            className="fixed inset-y-0 right-0 w-full max-w-sm bg-charcoal px-6 py-6"
+            className="fixed inset-y-0 right-0 w-full max-w-sm bg-ivory px-6 py-6 shadow-xl"
             style={{
-              animation: "slideIn 0.3s ease-out",
+              animation: "slideInRight 0.3s ease-in-out",
             }}
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-10">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center">
-                  <span className="text-gold font-bold text-lg">A</span>
-                </div>
-                <span className="text-xl font-semibold tracking-tight text-ivory uppercase">
-                  Abhima
+                <img
+                  src="/logo.png"
+                  alt="Abhima Events Logo"
+                  className="h-8 w-8"
+                />
+                <span className="font-poppins font-semibold text-xl text-charcoal tracking-tight uppercase">
+                  Abhima Events
                 </span>
               </div>
               <button
                 type="button"
-                className="p-2 text-ivory/80 hover:text-gold rounded-full hover:bg-white/5 transition-colors"
+                className="p-2 text-charcoal hover:text-gold transition-colors duration-200"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Close menu"
               >
@@ -168,67 +177,64 @@ export default function Header() {
 
             {/* Mobile Nav Links */}
             <nav className="flex flex-col gap-2">
-              {navigation.map((item, index) => (
+              {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-4 py-4 px-4 text-lg font-medium transition-all rounded-xl ${
-                    isActive(item.href)
-                      ? "text-gold bg-gold/10"
-                      : "text-ivory/80 hover:text-gold hover:bg-white/5"
-                  }`}
-                  style={{
-                    animation: `fadeSlideIn 0.4s ease-out ${index * 0.05}s both`,
-                  }}
+                  className={`
+                    py-4 px-4 font-poppins font-medium text-lg rounded-lg
+                    transition-all duration-200
+                    ${isActive(item.href)
+                      ? "text-gold bg-gold/10 border-l-3 border-gold"
+                      : "text-charcoal hover:text-gold hover:bg-charcoal-5"
+                    }
+                  `}
                 >
-                  <span className="text-sm text-gold/50 font-mono">0{index + 1}</span>
                   {item.name}
                 </Link>
               ))}
             </nav>
 
             {/* Mobile CTA */}
-            <div className="mt-10 pt-8 border-t border-ivory/10">
-              <Link
+            <div className="mt-10 pt-8 border-t border-charcoal-10">
+              <Button
                 href="/contact"
+                variant="primary"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-3 w-full py-4 bg-gold text-charcoal font-semibold rounded-full transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(184,143,20,0.3)]"
               >
                 Begin Conversation
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
+              </Button>
             </div>
 
             {/* Contact Info */}
             <div className="absolute bottom-8 left-6 right-6">
-              <p className="text-ivory/40 text-sm mb-2">Get in touch</p>
-              <a href="tel:+919876543210" className="text-ivory/80 hover:text-gold transition-colors">
-                +91 98765 43210
-              </a>
+              <p className="text-charcoal-50 text-sm mb-2 font-poppins">Get in touch</p>
+              <div className="flex flex-col gap-2 text-sm">
+                <a
+                  href="mailto:info@abhimaevents.com"
+                  className="text-charcoal hover:text-gold transition-colors font-poppins"
+                >
+                  info@abhimaevents.com
+                </a>
+                <a
+                  href="tel:+919876543210"
+                  className="text-charcoal hover:text-gold transition-colors font-poppins"
+                >
+                  +91 98765 43210
+                </a>
+              </div>
             </div>
           </div>
         </div>
       )}
 
       <style jsx>{`
-        @keyframes slideIn {
+        @keyframes slideInRight {
           from {
             transform: translateX(100%);
           }
           to {
-            transform: translateX(0);
-          }
-        }
-        @keyframes fadeSlideIn {
-          from {
-            opacity: 0;
-            transform: translateX(20px);
-          }
-          to {
-            opacity: 1;
             transform: translateX(0);
           }
         }

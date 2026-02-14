@@ -9,14 +9,29 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Brand Colors (from Design Document)
-        ivory: "#F8F7F6",
-        charcoal: "#2C2A26",
-        "antique-gold": "#B88F14",
-        gold: "#B88F14",
-        // Extended palette
-        "charcoal-light": "rgba(44, 42, 38, 0.7)",
-        "charcoal-border": "rgba(44, 42, 38, 0.1)",
+        // Light Beige Theme - Warm, Premium Color Palette
+        ivory: "#F5F1E8",           // Light warm beige (was #FEFDFB)
+        beige: "#F5F1E8",           // Alias for ivory
+        "beige-light": "#FAF8F3",   // Lighter beige for subtle contrast
+
+        charcoal: "#3D3226",        // Warm dark brown (was #2B2B2B cool gray)
+        "charcoal-5": "rgba(61, 50, 38, 0.05)",
+        "charcoal-10": "rgba(61, 50, 38, 0.10)",
+        "charcoal-20": "rgba(61, 50, 38, 0.20)",
+        "charcoal-50": "rgba(61, 50, 38, 0.50)",
+        "charcoal-70": "rgba(61, 50, 38, 0.70)",
+        "charcoal-90": "rgba(61, 50, 38, 0.90)",
+
+        gold: "#C9A86A",            // Antique Gold (unchanged - already warm)
+        "antique-gold": "#C9A86A",  // Alias
+
+        // Additional warm tones for depth
+        "warm-brown": "#5C4A3A",    // Medium warm brown for accents
+        "soft-taupe": "#A89B8F",    // Soft taupe for subtle elements
+
+        error: "#C1554D",           // Warm red (softer than #D32F2F)
+        success: "#388E3C",
+        warning: "#F57C00",
       },
       fontFamily: {
         poppins: ["var(--font-poppins)", "sans-serif"],
@@ -50,23 +65,13 @@ const config: Config = {
         "content": "800px",
       },
       animation: {
+        // Only functional animations allowed (Design Document compliant)
         "fade-in": "fadeIn 0.5s ease-out",
-        "slide-up": "slideUp 0.5s ease-out",
-        "shimmer": "shimmer 3s ease-in-out infinite",
-        "pulse-slow": "pulse 4s ease-in-out infinite",
       },
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
-        },
-        slideUp: {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        shimmer: {
-          "0%": { backgroundPosition: "200% 0" },
-          "100%": { backgroundPosition: "-200% 0" },
         },
       },
     },

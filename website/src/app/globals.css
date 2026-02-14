@@ -3,14 +3,20 @@
 
 @import "tailwindcss";
 
-/* CSS Variables for Brand Colors */
+/* CSS Variables for Brand Colors - Light Beige Theme */
 :root {
-  --ivory: #F8F7F6;
-  --charcoal: #2C2A26;
-  --antique-gold: #B88F14;
-  --gold: #B88F14;
-  --charcoal-light: rgba(44, 42, 38, 0.7);
-  --charcoal-border: rgba(44, 42, 38, 0.1);
+  --ivory: #F5F1E8;
+  /* Light warm beige */
+  --beige: #F5F1E8;
+  /* Alias */
+  --charcoal: #3D3226;
+  /* Warm dark brown */
+  --antique-gold: #C9A86A;
+  /* Antique gold */
+  --gold: #C9A86A;
+  /* Alias */
+  --charcoal-light: rgba(61, 50, 38, 0.7);
+  --charcoal-border: rgba(61, 50, 38, 0.1);
 }
 
 /* Base Styles */
@@ -23,12 +29,19 @@ html {
 body {
   font-family: 'Poppins', sans-serif;
   background-color: var(--ivory);
+  background-attachment: scroll;
   color: var(--charcoal);
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
 /* Typography defaults */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
 }
 
@@ -72,6 +85,7 @@ select:focus-visible {
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }
@@ -83,9 +97,12 @@ select:focus-visible {
 
 /* Gradient Text Animation */
 @keyframes gradient-text {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -102,9 +119,12 @@ select:focus-visible {
 
 /* Floating Animation */
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-20px);
   }
@@ -117,8 +137,8 @@ select:focus-visible {
 /* Glow Effect */
 .glow-gold {
   box-shadow: 0 0 20px rgba(184, 143, 20, 0.3),
-              0 0 40px rgba(184, 143, 20, 0.2),
-              0 0 60px rgba(184, 143, 20, 0.1);
+    0 0 40px rgba(184, 143, 20, 0.2),
+    0 0 60px rgba(184, 143, 20, 0.1);
 }
 
 /* Glass Effect */
@@ -134,6 +154,7 @@ select:focus-visible {
   0% {
     clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
   }
+
   100% {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
@@ -149,6 +170,7 @@ select:focus-visible {
     transform: scale(0.8);
     opacity: 1;
   }
+
   100% {
     transform: scale(2);
     opacity: 0;
@@ -198,7 +220,7 @@ select:focus-visible {
 
 /* Luxury Design Elements */
 .experience-card:hover {
-  background: linear-gradient(90deg, transparent, rgba(184, 143, 20, 0.03), transparent);
+  background: transparent;
 }
 
 .reason-item:hover .progress-line {
@@ -234,6 +256,7 @@ select:focus-visible {
   from {
     transform: scaleX(0);
   }
+
   to {
     transform: scaleX(1);
   }

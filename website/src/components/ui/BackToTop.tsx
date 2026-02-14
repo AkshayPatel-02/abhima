@@ -2,15 +2,31 @@
 
 import { useState, useEffect } from "react";
 
+/**
+ * Mobile-only "Back to Top" control following Design Document
+ * 
+ * Design Rules:
+ * - Show after 75% scroll depth on mobile only
+ * - Position: Bottom-right, 24px from edges
+ * - Style: Text-only ("↑ Top") or minimal up-arrow
+ * - Charcoal 70% opacity, Poppins Regular 14px
+ * - Background: Ivory 90% opacity, 8px border-radius
+ * - Smooth scroll to top (0.5s ease-out)
+ * - Fade out when user scrolls above 50% depth
+ */
 export default function BackToTop() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show after 75% scroll depth on mobile
-      const scrollPercent =
-        (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      setIsVisible(scrollPercent > 75);
+      const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+
+      // Show after 75% scroll, hide above 50%
+      if (scrollPercentage > 75) {
+        setShow(true);
+      } else if (scrollPercentage < 50) {
+        setShow(false);
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -18,21 +34,31 @@ export default function BackToTop() {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
-  if (!isVisible) return null;
+  if (!show) return null;
 
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-6 right-6 z-40 lg:hidden flex items-center gap-1 px-3 py-2 bg-ivory/90 text-charcoal/70 text-sm rounded-lg shadow-sm border border-charcoal/10 transition-opacity hover:text-charcoal"
+      className="
+        fixed bottom-6 right-6 z-40
+        lg:hidden
+        px-3 py-2 rounded-lg
+        bg-ivory/90 backdrop-blur-sm
+        text-charcoal-70 
+        font-poppins text-sm
+        transition-opacity duration-200
+        hover:text-charcoal
+        shadow-sm
+      "
       aria-label="Back to top"
     >
-      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-      </svg>
-      <span>Top</span>
+      ↑ Top
     </button>
   );
 }

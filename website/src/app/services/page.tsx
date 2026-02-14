@@ -1,127 +1,57 @@
-import { Metadata } from "next";
-import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "End-to-end event execution — from concept design to on-ground operations. We manage every element so you can remain fully present.",
-};
-
-const services = [
-  {
-    title: "Bespoke Event Concept & Experience Design",
-    description:
-      "Custom-crafted event concepts that reflect your vision, values, and the significance of your celebration.",
-  },
-  {
-    title: "Venue & Destination Curation",
-    description:
-      "Hand-picked venues and destinations selected for their character, logistics, and alignment with your event vision.",
-  },
-  {
-    title: "Décor, Styling & Production",
-    description:
-      "Thoughtful design execution that balances tradition with contemporary elegance — never ostentatious, always intentional.",
-  },
-  {
-    title: "Artist & Entertainment Management",
-    description:
-      "Curated entertainment experiences, from classical performances to contemporary artists, managed end-to-end.",
-  },
-  {
-    title: "Hospitality, Travel & Guest Experience",
-    description:
-      "Seamless guest management including accommodations, transport, and personalized hospitality for every attendee.",
-  },
-  {
-    title: "Sound, Lighting & Visual Production",
-    description:
-      "Technical excellence that enhances atmosphere without overwhelming — precision-engineered for every moment.",
-  },
-  {
-    title: "On-Ground Event Direction & Operations",
-    description:
-      "Meticulous coordination and real-time management ensuring flawless execution from start to finish.",
-  },
-];
+import Button from "@/components/ui/Button";
 
 export default function ServicesPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="pt-12 pb-16 md:pt-16 md:pb-24 bg-ivory">
-        <div className="mx-auto max-w-[800px] px-6 md:px-10">
-          <h1 className="text-4xl md:text-5xl font-semibold text-charcoal mb-6 text-center">
+      <section className="bg-ivory pt-32 pb-20 md:pb-30">
+        <div className="container mx-auto px-6 md:px-10 lg:px-20 max-w-[800px]">
+          <h1 className="font-poppins font-semibold text-5xl md:text-[56px] text-charcoal mb-8 leading-[1.1]">
             Services
           </h1>
-          <p className="text-lg md:text-xl text-charcoal/70 text-center leading-relaxed">
-            End-to-end execution. Every detail managed.
-          </p>
-        </div>
-      </section>
-
-      {/* Introduction */}
-      <section className="py-12 md:py-16 bg-white">
-        <div className="mx-auto max-w-[800px] px-6 md:px-10">
-          <p className="text-xl text-charcoal text-center leading-relaxed">
-            We manage every element behind the scenes so you can remain fully 
-            present in the moment.
+          <p className="font-poppins text-lg md:text-xl text-charcoal leading-relaxed">
+            We manage every element behind the scenes so you can remain fully present in the moment.
           </p>
         </div>
       </section>
 
       {/* Services List */}
-      <section className="py-16 md:py-24 bg-ivory">
-        <div className="mx-auto max-w-[900px] px-6 md:px-10">
-          <div className="space-y-12">
-            {services.map((service, index) => (
-              <div
-                key={service.title}
-                className="border-b border-charcoal/10 pb-12 last:border-0"
-              >
-                <div className="flex gap-6">
-                  {/* Number */}
-                  <span className="text-antique-gold text-sm font-semibold pt-1">
-                    0{index + 1}
-                  </span>
-                  
-                  {/* Content */}
-                  <div>
-                    <h3 className="text-xl font-semibold text-charcoal mb-3">
-                      {service.title}
-                    </h3>
-                    <p className="text-charcoal/70 leading-relaxed">
-                      {service.description}
-                    </p>
-                  </div>
-                </div>
+      <section className="bg-ivory py-20 md:py-30 border-t border-charcoal-10">
+        <div className="container mx-auto px-6 md:px-10 lg:px-20 max-w-[900px]">
+          <div className="space-y-6">
+            {[
+              'Bespoke event concept & experience design',
+              'Venue & destination curation',
+              'Décor, styling & production',
+              'Artist & entertainment management',
+              'Hospitality, travel & guest experience',
+              'Sound, lighting & visual production',
+              'On-ground event direction & operations'
+            ].map((service) => (
+              <div key={service} className="flex items-start gap-4 py-4 border-b border-charcoal-10 last:border-b-0">
+                <span className="flex-shrink-0 w-2 h-2 rounded-full bg-gold mt-2"></span>
+                <p className="font-poppins text-lg md:text-xl text-charcoal">{service}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Closing Statement */}
-      <section className="py-16 md:py-24 bg-charcoal text-ivory">
-        <div className="mx-auto max-w-[800px] px-6 md:px-10 text-center">
-          <p className="text-2xl md:text-3xl font-semibold leading-relaxed">
+      {/* Tagline */}
+      <section className="bg-ivory py-20 md:py-30 border-t border-charcoal-10">
+        <div className="container mx-auto px-6 md:px-10 lg:px-20 max-w-[800px] text-center">
+          <p className="font-poppins text-lg md:text-xl text-charcoal-70 italic">
             Celebrations of every scale, curated with the same unwavering standard.
           </p>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-16 md:py-24 bg-ivory">
-        <div className="mx-auto max-w-[800px] px-6 md:px-10 text-center">
-          <h2 className="text-2xl md:text-3xl font-semibold text-charcoal mb-6">
-            Let's Plan Together
-          </h2>
-          <Link
-            href="/contact"
-            className="inline-flex h-12 items-center justify-center px-8 bg-antique-gold text-white font-medium transition-colors hover:bg-charcoal"
-          >
-            Begin Conversation
-          </Link>
+      <section className="bg-ivory py-20 md:py-30">
+        <div className="container mx-auto px-6 md:px-10 lg:px-20 max-w-[800px] text-center">
+          <Button href="/contact" variant="primary">
+            Discuss Your Event
+          </Button>
         </div>
       </section>
     </>
